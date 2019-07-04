@@ -23,11 +23,6 @@ In a test of 500 repeats:
 * with register length 8 bytes: no fails
 * with register length 12 bytes: 36 fails
 
-# toolchain
-
-* Yosys 0.8+409 (git sha1 a01386c, clang 3.8.0-2ubuntu4 -fPIC -Os)
-* nextpnr-ice40 -- Next Generation Place and Route (git sha1 e7fe046)
-
 # formal verification
 
 There are 2 formal tests included:
@@ -52,7 +47,7 @@ Test pass. Note cyan trace goes low at reset:
 
 ![read count = 0](images/12byte_ok.png)
 
-Test fails when register is not reset to 0 correctly. Note cyan trace goes high after reset:
+Test fails when register is not reset to 0 correctly. Note cyan trace goes high after reset!
 
 ![read count = 3](images/12byte_fail.png)
 
@@ -77,3 +72,7 @@ register is read with a simple python script: [test_read_count.py](python/test_r
     1 AssertionError: 1 != 0
     35 AssertionError: 3 != 0
 
+# toolchain
+
+* Yosys 0.8+409 (git sha1 a01386c, clang 3.8.0-2ubuntu4 -fPIC -Os)
+* nextpnr-ice40 -- Next Generation Place and Route (git sha1 e7fe046)
