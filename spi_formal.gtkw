@@ -1,10 +1,10 @@
 [*]
 [*] GTKWave Analyzer v3.3.66 (w)1999-2015 BSI
-[*] Thu Jul  4 10:15:11 2019
+[*] Thu Jul  4 10:16:50 2019
 [*]
 [dumpfile] "/home/matt/work/pancom/fpga/spi-reset-bug/spi_formal/engine_0/trace0.vcd"
-[dumpfile_mtime] "Thu Jul  4 10:14:39 2019"
-[dumpfile_size] 14523
+[dumpfile_mtime] "Thu Jul  4 10:16:11 2019"
+[dumpfile_size] 9413
 [savefile] "/home/matt/work/pancom/fpga/spi-reset-bug/spi_formal.gtkw"
 [timestart] 0
 [size] 1619 771
@@ -28,8 +28,11 @@ top.spi_clk
 top.spi_miso
 top.spi_mosi
 top.f_mosi_signalled
+@29
+top.spi_slave.re
+@28
 top.spi_ss
-@201
+@200
 -
 @22
 top.read_count[7:0]
