@@ -1,6 +1,8 @@
-# registers not re-setting to 0 correctly
+# registers not re-setting to 0 correctly with larger SPI registers
 
-Raspberry pi reads 8 bit registers via hardware SPI from Icoboard (Lattice ICE HX8K).
+The design is made with either 8 or 12 bytes registers that are read by hardware SPI from a
+Raspberry Pi. 
+
 FPGA [SPI slave](spi_slave.v) module written by Eric Brombaugh.
 
 After a reset, read_count register is set to 0. Every read, this counter is incremented.
@@ -11,19 +13,19 @@ The test is:
 * make SPI read of read_count register
 * assert read_count is 0
 
-SPI clock is set to 2MHz. FMax is 120MHz.
+SPI clock is set to 2MHz. FMax is 80MHz with 8 byte and 55MHz with 12.
+FPGA is Lattice ICE HX8K (Icoboard) mounted on top of Raspberry Pi (very short SPI lines).
 
 ## summary
 
 In a test of 500 repeats:
 
-* arachne-pnr: 24 failed with read_count = 3, and 4 failed with read_count = 2.
-* nextpnr: no fails
+* with register length 8: no fails
+* with register length 12: 36 fails
 
 # toolchain
 
 * Yosys 0.8+409 (git sha1 a01386c, clang 3.8.0-2ubuntu4 -fPIC -Os)
-* arachne-pnr 0.1+325+0 (git sha1 840bdfd, g++ 5.4.0-6ubuntu1~16.04.10 -O2)
 * nextpnr-ice40 -- Next Generation Place and Route (git sha1 e7fe046)
 
 # formal verification
@@ -46,17 +48,17 @@ A cover statement is included that shows read_count changing. Solver manipulates
 
 ## read count = 0 after reset
 
-When read count is 0
+Test pass:
 
-![read count = 0](images/20190704_120019.png)
+![read count = 0](images/12byte_ok.png)
 
-When read count is 3
+Test fails when register is not reset to 0 correctly:
 
-![read count = 3](images/20190704_115922.png)
+![read count = 3](images/12byte_fail.png)
 
-Close up on reset transition to low when read_count is read != 0
+Close up on reset transition to low when test fails:
 
-![reset goes low and read_count is not 0](images/20190704_120843.png)
+![reset goes low and read_count is not 0](images/reset_transition.png)
 
 # test results 
 
@@ -64,14 +66,14 @@ register is read with a simple python script: [test_read_count.py](python/test_r
 
     rm test.results ; for i in $(seq 500); do echo $i;  python test_read_count.py >> test.results 2>&1 ; done
 
-## arachne-pnr
-
-    grep -i assertion test.results  | sort | uniq -c
-    4 AssertionError: 2 != 0
-    24 AssertionError: 3 != 0
-
-## nextpnr
+## register length 8
 
     grep -i assertion test.results  | sort | uniq -c
     <no results>
+
+## register length 12
+
+    grep -i assertion test.results  | sort | uniq -c
+    1 AssertionError: 1 != 0
+    35 AssertionError: 3 != 0
 

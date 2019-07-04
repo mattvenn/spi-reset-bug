@@ -47,7 +47,8 @@ module top (
     localparam REG_GEN        = 7'h7D; 
     localparam REG_RD_CNT     = 7'h7E; 
 
-    localparam SPI_LEN = 8;
+    // change this number to alter the outcome of the test
+    localparam SPI_LEN = 8 * 12;
 
     wire [6:0] addr;
 
