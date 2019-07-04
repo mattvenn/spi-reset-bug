@@ -1,7 +1,7 @@
 # registers not re-setting to 0 correctly
 
 Raspberry pi reads 8 bit registers via hardware SPI from Icoboard (Lattice ICE HX8K).
-FPGA SPI slave module written by Eric Brombaugh.
+FPGA [SPI slave](spi_slave.v) module written by Eric Brombaugh.
 
 After a reset, read_count register is set to 0. Every read, this counter is incremented.
 
