@@ -20,8 +20,8 @@ FPGA is Lattice ICE HX8K (Icoboard) mounted on top of Raspberry Pi (very short S
 
 In a test of 500 repeats:
 
-* with register length 8: no fails
-* with register length 12: 36 fails
+* with register length 8 bytes: no fails
+* with register length 12 bytes: 36 fails
 
 # toolchain
 
