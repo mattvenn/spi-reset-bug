@@ -1,7 +1,6 @@
-# registers not re-setting to 0 correctly with larger SPI registers
+# Reset doesn't reliably zero registers with larger SPI register.
 
-The design is made with either 8 or 12 bytes registers that are read by hardware SPI from a
-Raspberry Pi. 
+The design is made with either 8 or 12 bytes registers that are read by hardware SPI from a Raspberry Pi. 
 
 FPGA [SPI slave](spi_slave.v) module written by Eric Brombaugh.
 
