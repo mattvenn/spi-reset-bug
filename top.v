@@ -105,7 +105,7 @@ module top (
 
         // produce a trace that shows read_count != 0
         always @(posedge ext_clk) begin
-            cover(read_count == 2);
+            cover(read_count == 1);
         end
 
         // prove that only way read_count can change if with spi_mosi changing
