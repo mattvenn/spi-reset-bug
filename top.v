@@ -9,7 +9,7 @@ module top (
     output pmod1_1,
     output pmod1_2,
     output pmod1_3,
-    output pmod1_4,
+    output pmod1_4
 );
     wire spi_we;
     wire spi_re;
@@ -48,7 +48,11 @@ module top (
     localparam REG_RD_CNT     = 7'h7E; 
 
     // change this number to alter the outcome of the test
+    `ifndef FORMAL
     localparam SPI_LEN = 8 * 12;
+    `else
+    localparam SPI_LEN = 8; // reduce clocks needed to read registers, so can use lower depth in sby config file
+    `endif
 
     wire [6:0] addr;
 
