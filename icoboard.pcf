@@ -14,3 +14,9 @@ set_io --warn-no-port spi_ss   D4 # raspi pin 26 (CE1)
 set_io --warn-no-port spi_clk  H11
 set_io --warn-no-port spi_mosi A6
 set_io --warn-no-port spi_miso A7
+
+# spi debug
+set_io --warn-no-port pmod1_1  D8
+set_io --warn-no-port pmod1_2  B9
+set_io --warn-no-port pmod1_3  B10
+set_io --warn-no-port pmod1_4  B11

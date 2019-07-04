@@ -1,0 +1,17 @@
+[options]
+mode prove
+depth 40
+
+[engines]
+smtbmc
+
+[script]
+read -formal top.v  
+read -formal spi_slave.v
+read -formal pulse.v
+prep -top top
+
+[files]
+top.v
+pulse.v
+spi_slave.v

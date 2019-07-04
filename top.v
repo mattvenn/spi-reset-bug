@@ -5,12 +5,23 @@ module top (
     input spi_clk,
     input spi_mosi,
     input spi_ss,
-    input reset
+    input reset,
+    output pmod1_1,
+    output pmod1_2,
+    output pmod1_3,
+    output pmod1_4,
 );
     wire spi_we;
     wire spi_re;
     wire clk_32m;
 
+    // for capturing the traces
+    assign pmod1_1 = spi_miso;
+    assign pmod1_2 = spi_clk;
+    assign pmod1_3 = read_count != 1'b0;
+    assign pmod1_4 = reset;
+
+    `ifndef FORMAL
     SB_PLL40_CORE #(
         .FEEDBACK_PATH("SIMPLE"),
         .PLLOUT_SELECT("GENCLK"),
@@ -26,12 +37,17 @@ module top (
         .REFERENCECLK(ext_clk),
         .PLLOUTCORE(clk_32m)
     );
+    `endif
+
+    `ifdef FORMAL
+        wire clk_32m = ext_clk;
+    `endif
 
     // register widths
     localparam REG_GEN        = 7'h7D; 
     localparam REG_RD_CNT     = 7'h7E; 
 
-    localparam SPI_LEN = 32;
+    localparam SPI_LEN = 8;
 
     wire [6:0] addr;
 
@@ -40,7 +56,7 @@ module top (
 
     spi_slave #(.dsz(SPI_LEN)) spi_slave(.reset(reset), .clk(clk_32m), .spimiso(spi_miso), .spiclk(spi_clk), .spimosi(spi_mosi), .spicsl(spi_ss), .we(spi_we), .re(spi_re), .wdat(wdat), .addr(addr), .rdat(rdat));
 
-    reg [SPI_LEN-1:0] read_count;
+    reg [SPI_LEN-1:0] read_count = 0;
     reg [SPI_LEN-1:0] general_reg = 25000; // test register for testing SPI read/write
 
     wire spi_re_clk_en;
@@ -78,6 +94,38 @@ module top (
             endcase
         end
     end
+
+    `ifdef FORMAL
+        reg f_past_valid = 0;
+        always @(posedge ext_clk)
+            f_past_valid <= 1;
+
+        // start in reset
+        initial assume(reset);
+
+        // produce a trace that shows read_count != 0
+        always @(posedge ext_clk) begin
+            cover(read_count == 2);
+        end
+
+        // prove that only way read_count can change if with spi_mosi changing
+        reg f_mosi_signalled = 0;
+        always @(posedge ext_clk) begin
+            if(spi_mosi)
+                f_mosi_signalled <= 1'b1;
+            if(!f_mosi_signalled)
+                assert(read_count == 0);
+        end
+
+        // prove at reset counts go to 0
+        always @(posedge ext_clk) begin
+            if(f_past_valid)
+                if($past(reset)) begin
+                    assert(read_count == 0);
+                    assert(general_reg == 0);
+                end
+        end
+    `endif
 
 endmodule
 
