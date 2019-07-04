@@ -33,7 +33,7 @@ There are 2 formal tests included:
 1. prove that only way read_count can change if with spi_mosi changing
 2. prove at reset counts go to 0
 
-k-induction succeeds with a depth of 40.
+k-induction succeeds with a depth of 40 (with a register length set to 1 byte).
 
 A cover statement is included that shows read_count changing. Solver manipulates MOSI and SS to reach cover.
 
