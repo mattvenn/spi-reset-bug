@@ -31,6 +31,9 @@ all: $(PROJ).rpt $(PROJ).bin
 lint:
 	verilator --lint-only top.v spi_slave.v
 
+formal:
+	sby -f spi_formal.sby
+
 prog: $(PROJ).bin
 	icoprog -p < $<
 
