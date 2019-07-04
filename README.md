@@ -48,15 +48,15 @@ A cover statement is included that shows read_count changing. Solver manipulates
 
 ## read count = 0 after reset
 
-Test pass:
+Test pass. Note cyan trace goes low at reset:
 
 ![read count = 0](images/12byte_ok.png)
 
-Test fails when register is not reset to 0 correctly:
+Test fails when register is not reset to 0 correctly. Note cyan trace goes high after reset:
 
 ![read count = 3](images/12byte_fail.png)
 
-Close up on reset transition to low when test fails:
+Close up on reset transition to low when test fails.
 
 ![reset goes low and read_count is not 0](images/reset_transition.png)
 
