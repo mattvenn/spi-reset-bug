@@ -13,11 +13,14 @@ SRC = top.v spi_slave.v pulse.v
 
 all: $(PROJ).rpt $(PROJ).bin
 
-%.blif: $(SRC)
-	yosys -p "synth_ice40 -top top -blif $@" $^
+%.blif %.json: $(SRC)
+	yosys -l spislave.log -p 'synth_ice40 -top top -json spislave.json -blif $@' $^
 
-%.asc: $(PIN_DEF) %.blif
-	arachne-pnr --device 8k --package $(PACKAGE) -p $^ -o $@
+%.asc: $(PIN_DEF) %.json
+	nextpnr-ice40 --freq 30 --hx8k --asc $@ --pcf $< --json spislave.json
+
+#%.asc: $(PIN_DEF) %.blif
+#	arachne-pnr --device 8k --package $(PACKAGE) -p $^ -o $@
 
 %.bin: %.asc
 	icepack $< $@
@@ -32,7 +35,7 @@ prog: $(PROJ).bin
 	icoprog -p < $<
 
 clean:
-	rm -f $(PROJ).blif $(PROJ).asc $(PROJ).rpt $(PROJ).bin
+	rm -f $(PROJ).blif $(PROJ).asc $(PROJ).rpt $(PROJ).bin $(PROJ).json
 
 .SECONDARY:
 .PHONY: all prog clean
