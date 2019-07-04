@@ -1,0 +1,16 @@
+###################################
+# Physical constraints file (pcf) #
+# for iCE40HX8K-CT256             #
+###################################
+
+
+### Clock
+set_io ext_clk R9
+
+set_io --warn-no-port reset   D6 # raspi pin 12
+
+# spi - top header
+set_io --warn-no-port spi_ss   D4 # raspi pin 26 (CE1)
+set_io --warn-no-port spi_clk  H11
+set_io --warn-no-port spi_mosi A6
+set_io --warn-no-port spi_miso A7
