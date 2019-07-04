@@ -9,7 +9,7 @@ The test is:
 
 * reset FPGA
 * make SPI read of read_count register
-* check read_count is 0
+* assert read_count is 0
 
 SPI clock is set to 2MHz. FMax is 120MHz.
 
@@ -22,9 +22,9 @@ In a test of 500 repeats:
 
 # toolchain
 
-Yosys 0.8+409 (git sha1 a01386c, clang 3.8.0-2ubuntu4 -fPIC -Os)
-arachne-pnr 0.1+325+0 (git sha1 840bdfd, g++ 5.4.0-6ubuntu1~16.04.10 -O2)
-nextpnr-ice40 -- Next Generation Place and Route (git sha1 e7fe046)
+* Yosys 0.8+409 (git sha1 a01386c, clang 3.8.0-2ubuntu4 -fPIC -Os)
+* arachne-pnr 0.1+325+0 (git sha1 840bdfd, g++ 5.4.0-6ubuntu1~16.04.10 -O2)
+* nextpnr-ice40 -- Next Generation Place and Route (git sha1 e7fe046)
 
 # formal verification
 
@@ -35,7 +35,7 @@ There are 2 formal tests included:
 
 k-induction succeeds with a depth of 40.
 
-A cover statement is included that shows read_count should only 
+A cover statement is included that shows read_count changing. Solver manipulates MOSI and SS to reach cover.
 
 # scope shots
 
@@ -70,7 +70,7 @@ register is read with a simple python script: [test_read_count.py](python/test_r
     4 AssertionError: 2 != 0
     24 AssertionError: 3 != 0
 
-# nextpnr
+## nextpnr
 
     grep -i assertion test.results  | sort | uniq -c
     <no results>
