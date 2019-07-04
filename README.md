@@ -13,15 +13,19 @@ The test is:
 * make SPI read of read_count register
 * assert read_count is 0
 
-SPI clock is set to 2MHz. FMax is 80MHz with 8 byte and 55MHz with 12.
-FPGA is Lattice ICE HX8K (Icoboard) mounted on top of Raspberry Pi (very short SPI lines).
-
 ## summary
 
 In a test of 500 repeats:
 
 * with register length 8 bytes: no fails
 * with register length 12 bytes: 36 fails
+
+# hardware/timing
+
+* Raspberry Pi SPI clock is set to 2MHz. 
+* FPGA PLL creates 32MHz clock from 100MHz external oscillator.
+* FPGA is Lattice ICE HX8K (Icoboard) mounted on top of Raspberry Pi (very short SPI lines).
+* FMax is 80MHz with 8 byte and 55MHz with 12. 
 
 # formal verification
 
@@ -51,7 +55,7 @@ Test fails when register is not reset to 0 correctly. Note cyan trace goes high 
 
 ![read count = 3](images/12byte_fail.png)
 
-Close up on reset transition to low when test fails.
+Close up on reset transition to low when test fails. Clock period at 32MHz is 31ns. This shot is 10ns/div.
 
 ![reset goes low and read_count is not 0](images/reset_transition.png)
 

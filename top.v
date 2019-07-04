@@ -25,7 +25,7 @@ module top (
     SB_PLL40_CORE #(
         .FEEDBACK_PATH("SIMPLE"),
         .PLLOUT_SELECT("GENCLK"),
-        // 32mhz
+        // input 100MHz - output 32MHz
         .DIVR(4'b0011),
         .DIVF(7'b0101000),
         .DIVQ(3'b101), 
